@@ -1,0 +1,9 @@
+id,sender,subject,body,date
+1,amazon@gmail.com,Order shipped,Your amazon order has been shipped,2026-07-10
+2,college@gmail.com,Assignment submission,Submit your python assignment before monday,2026-07-11
+3,linkedin@gmail.com,Job Alert,New internship opportunity available,2026-07-12
+4,netflix@gmail.com,Subscription update,Your subscription payment is due,2026-07-13
+5,hr@microsoft.com,Interview Update,Your interview is scheduled tomorrow,2026-07-14
+6,flipkart@gmail.com,Order delivered,Your product delivery is completed,2026-07-14
+7,professor@gmail.com,Exam Notice,Your semester exam schedule is released,2026-07-15
+8,github@gmail.com,Repository Update,Your repository received a new star,2026-07-15
