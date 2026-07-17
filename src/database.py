@@ -1,11 +1,22 @@
 import sqlite3
 import pandas as pd
+import os
 
-database_path="database/email.db"
-csv_path=csv_path = "data/emails.csv"
+DATABASE_DIR = "database"
+DATABASE_PATH = "database/email.db"
+CSV_PATH = "data/emails.csv"
+
+
+# Create database folder if not exists
+os.makedirs(DATABASE_DIR, exist_ok=True)
+
+
 def create_database():
-    conn=sqlite3.connect(database_path)
-    cursor=conn.cursor()
+
+    conn = sqlite3.connect(DATABASE_PATH)
+
+    cursor = conn.cursor()
+
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS emails(
         id INTEGER PRIMARY KEY,
@@ -15,41 +26,57 @@ def create_database():
         date TEXT
     )
     """)
+
     conn.commit()
     conn.close()
-    print("Database created succesfully")
+
+    print("Database created successfully")
+
+
 def insert_email():
-    df=pd.read_csv(csv_path)
-    conn=sqlite3.connect(database_path)
-    df.to_sql(
-        "emails",
-        conn,
-        if_exists='append',
-        index=False
-    )
+
+    conn = sqlite3.connect(DATABASE_PATH)
+
+    # Check existing data
+    count = conn.execute(
+        "SELECT COUNT(*) FROM emails"
+    ).fetchone()[0]
+
+    if count == 0:
+        df = pd.read_csv(CSV_PATH)
+
+        df.to_sql(
+            "emails",
+            conn,
+            if_exists="append",
+            index=False
+        )
+
+        print("Emails inserted successfully")
+
+    else:
+        print("Emails already exist")
+
     conn.close()
-    print("Email inserted succesfully")
+
+
 def show_emails():
-    conn=sqlite3.connect(database_path)
-    data=pd.read_sql(
-        'SELECT * FROM emails',
+
+    conn = sqlite3.connect(DATABASE_PATH)
+
+    df = pd.read_sql(
+        "SELECT * FROM emails",
         conn
     )
-    conn.close()
-    print(data)
-def show_emails():
-    conn = sqlite3.connect(database_path)
-
-    df = pd.read_sql("SELECT * FROM emails", conn)
 
     conn.close()
 
-    print(df)
-if __name__=='__main__':
+    return df
+
+
+if __name__ == "__main__":
+
     create_database()
     insert_email()
-    show_emails()
 
-
-
-
+    print(show_emails())
